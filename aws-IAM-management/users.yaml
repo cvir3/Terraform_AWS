@@ -1,0 +1,8 @@
+users:
+  - username: devuser
+    roles: [AmazonEC2FullAccess]
+  - username: qauser
+    #Multiple roles assigned
+    roles: [AmazonS3ReadOnlyAccess],[AmazonEC2FullAccess]
+  - username: superadmin
+    roles: [AdministratorAccess]
