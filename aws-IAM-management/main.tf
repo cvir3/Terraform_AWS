@@ -13,10 +13,15 @@ provider "aws" {
 
 locals {
   users_data = yamldecode(file("./users.yaml")).users
+  # Creating list
+  user_role_pair = flatten([for user in local.users_data : [for role in user.roles : {
+    username = user.username
+    role     = role
+  }]])
 }
 
 output "output" {
-  value = local.users_data[*].username
+  value = local.user_role_pair
 }
 
 # Creating users
@@ -39,4 +44,13 @@ resource "aws_iam_user_login_profile" "password" {
   }
 }
 
+#Attaching Policies
+resource "aws_iam_user_policy_attachment" "main" {
+  for_each = {
+    for pair in local.user_role_pair :
+    "${pair.username}-${pair.role}" => pair
+  }
+  user       = aws_iam_user.username[each.value.username].name
+  policy_arn = "arn:aws:iam::aws:policy/${each.value.role}"
+}
 
