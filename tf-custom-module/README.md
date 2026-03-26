@@ -111,7 +111,7 @@ validation {
   }
 
 ```
-#### ⤷ This is comples object validation
+#### ⤷ This is Complex object validation
 ```bash
 variable "vpc_config" {
   description = "To get the CIDR and Name of VPC from user"
